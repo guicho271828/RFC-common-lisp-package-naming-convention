@@ -1,0 +1,134 @@
+
+
+* About this document
+
++ This is only a personal writing, do not consider it anything
+  official or anything that has a community concensus.
+
++ Part of the document may be currently written in Japanese but they
+  will be soon written again in English.
+
++ The document is meant to be discussed in a japanese lisp community
+  Shibuya.lisp.
+
++ I have waited for the updates in google-common-lisp-style-guide but
+  nothing related to the package naming conventions have come up.
+
+* Why package convention is necessary
+
++ many many libraries are submitted
+  + the name rarely suggest their functions and features
+    + it is sometimes just an acronym
+  + none of them are correctly organized
+  + not good for finding a library
+
++ In Cliki documents you are able to specify a genre
+  + but its not built in the source code
+  + Quickdocs http://quickdocs.org/ excavates genre data from cliki
+
++ You can't search quicklisp project programatically by genre
+  + asdf extensions needed?
+  + I have no idea about asdf3 and xcvb, what are they?
+    + http://common-lisp.net/projects/xcvb/doc/README.html (xcvb doc)
+
+* I don't force implementers to change their package name. 
+
+Use =:nickname= option for your package.
+http://www.lispworks.com/documentation/HyperSpec/Body/m_defpkg.htm
+
+You do not have to change a package name (that should make a total
+mess in a dependency specifications in =defpackage= of other libraries.)
+
+* extended Allegro subpackage naming convension
+
+Basics:
+
+http://www.franz.com/support/documentation/9.0/doc/packages.htm#relative-2
+
+** use of []
+
+you can wrap certain name with [] in order to specify a string
+to be considered as a layer in the package name.
+
++ :private.[aaa@example.com].utils
+
+the dot in ~example.com~ is not considered as a subpackage designator.
+
+** mixin /
+
++ :public.[gui/ported].cl-gtk2
+
+cl-gtk2 has both ~gui~ and ~ported~ attributes.
+
+* You have a private namespace repository 
+
+you can specify your name under =private= package repository as long
+as it does not conflict with other lispers.
+
++ private :: stores a private packages. private utility functions, etc.
+  + name1
+  + name2
+  + etc... (any ids used in BBS or irc)
+
+* Package genres
+
+~net~ inherits ~low-level~ (sub-genre). You do not have to specify
+both of them. specifying ~net~ means you have already specified
+~low-level~.
+
+all genres should be singular(except statistics).
+no abbreviations (except clos).
+
+I recommend the number of genres of a library to be no more than 3. If
+it exceeds 3, then it would be your library is not divided into
+a reasonably loose-coupled sub-library.
+
++ system :: defsystem and library management. *not* about unix systems
+  + documentation :: sb-texinfo etc
++ package :: handles packages, importing and exporting symbols
++ low-level :: unix interface, threads, sockets, cffi, etc
+  + os :: unix, windows
+  + net :: sockets etc
++ compatibility :: provides a compatibility layer. bordeaux-thread,
+                   closer-mop etc 
++ ported :: ported from the libraries written in other languages.
++ clos :: clos, mop and amop related
++ general-purpose-utility :: alexandria etc.
++ macro :: only when it mainly consists of macros and you cant
+            specify other characteristics. macrology
++ readmacro :: 
++ structure :: like kd-tree, R-trees, streams
+  + interface :: defines an interface to the objects.
++ algorithm :: searching, etc
++ science :: 
+  + algebra :: maxima
+  + matrix :: blapack, speed-intence libraries
+  + random :: 
+  + cipher :: 
+  + statistics :: 
++ data-format :: reading or writing a data format.
+  + archive :: 
+  + binary :: 
+  + data-reader :: parser only.
+  + data-writer :: writer only. string generators. cl-who etc
+  + data-reader-writer :: both.
++ graphic :: cl-gtk, opengl, vecto
++ audio :: cl-openal
++ web :: hunchentoot
++ db :: accessing databases
++ concurrency :: threading
++ international :: localization
++ units :: time,weight,currency
++ test :: testing, code coverage, tdd
++ log :: logging
++ framework :: clack (web framework), FiveAM (testing framework),
+               anything bigger and defines a style of part of applications
++ language-extension :: some libraries extending or superceding :cl
+     package. The largest kinds of libraries. e.g.) Screamer
+
+* Other discussions related to package nicknames
+
++ https://github.com/Kalimehtar/advanced-readtable
++ https://github.com/3b/package-local-nicknames
++ http://qiita.com/items/22f713753a026279c6f3 (japanese)
+  + https://gist.github.com/zeptometer/4373557 (code)
